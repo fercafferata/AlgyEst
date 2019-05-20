@@ -1,5 +1,5 @@
 import random
-max = 10
+max = 100
 
 
 class Pila():
@@ -129,20 +129,23 @@ def ordenPilaDecr(pila):
     return aux
 
 
-def fibonacciPila(n):  # Falta terminar
+def fibonacciPila(n):
     """Devuelve sucesion de Fibonacci de numero ingresado"""
 
     p = Pila()
     apilar(p, 0)
-    apilar(p, 1)
 
-    while not pila_vacia(p):
-        dato = desapilar(p)
-        if dato == 0 or dato == 1:
-            return x
-        else:
-            apilar(p, n-1)
-            apilar(p, n-2)
+    if (n == 1):
+        apilar(p, 1)
+    elif (n > 1):
+        apilar(p, 1)
+        while not pila_llena(p) and tamanio(p) <= n:
+            dato = desapilar(p)
+            dato2 = cima(p)
+            apilar(p, dato)
+            apilar(p, (dato + dato2))
+    print(p)
+
 
 
 def comprobarOrdenAsc(lista):
@@ -154,3 +157,54 @@ def comprobarOrdenAsc(lista):
             band = False
         i += 1
     return band
+
+
+def factorialPila(n):
+    """Devuelve factorial de numero introducido"""
+    factorial = 1
+    p = Pila()
+    while n > 0:
+        apilar(p, n)
+        n -= 1
+    while not pila_vacia(p):
+        factorial *= desapilar(p)
+
+    return factorial
+
+
+def quicksortPila(vect, pri, ult):
+    """Ordena lista por quicksort iterativo"""
+    p = Pila()
+    apilar(p, [pri, ult])
+    datos = []
+
+    while not pila_vacia(p):
+        datos = desapilar(p)
+
+        i = datos[0]
+        j = datos[1] - 1
+        pivot = datos[1]
+
+        while (i < j):
+            while (vect[i] <= vect[pivot]) and (i < j):
+                i += 1
+            while (vect[j] > vect[pivot]) and (i < j):
+                j -= 1
+            if i <= j:
+                vect[i], vect[j] = vect[j], vect[i]
+        if vect[pivot] < vect[i]:
+            vect[pivot], vect[i] = vect[i], vect[pivot]
+
+        if datos[0] < j:
+            apilar(p, [datos[0], j])
+        if datos[1] > i:
+            apilar(p, [i+1, datos[1]])
+
+
+def listaRandom(tamanio):
+    """Devuelve lista random de tamanio indicado"""
+    lista = []
+    for i in range(0, tamanio):
+        lista.append(random.randint(-1000, 1000))
+
+    return lista
